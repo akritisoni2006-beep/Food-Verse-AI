@@ -28,9 +28,17 @@ def load_env_file():
 load_env_file()
 
 def get_gemini_api_key() -> str:
-    """Retrieves GEMINI_API_KEY from environment."""
-    return os.environ.get("GEMINI_API_KEY", "").strip()
+    """Retrieves GEMINI_API_KEY from environment, ignoring placeholder values."""
+    key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not key:
+        return ""
+    lower = key.lower()
+    if lower in ("your_gemini_api_key_here", "your_api_key_here", "none", "null", "placeholder"):
+        return ""
+    if lower.startswith("your_") or lower.startswith("<") or len(key) < 15:
+        return ""
+    return key
 
 def is_ai_enabled() -> bool:
-    """True if valid Gemini API key is configured."""
+    """True only if a valid, non-placeholder Gemini API key is configured."""
     return bool(get_gemini_api_key())

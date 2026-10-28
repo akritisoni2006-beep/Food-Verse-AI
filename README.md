@@ -1,72 +1,36 @@
 # 🍲 Food Verse AI – Multimodal Food Intelligence Platform
 
-Welcome to **Food Verse AI**, an enterprise-grade multimodal food intelligence agent and unified platform designed to analyze food through **Images, Videos, Audio, and Text**.
+Welcome to **Food Verse AI**, a multimodal food intelligence agent and unified full-stack application designed to analyze food through **Images, Videos, Audio, and Text**.
 
-Powered by a **FastAPI** backend and an interactive **ReactJS** frontend, Food Verse AI provides end-to-end capabilities spanning computer vision, culinary intelligence, kitchen safety, and personalized health.
+Powered by a **FastAPI** backend and an interactive **ReactJS** frontend, Food Verse AI provides end-to-end capabilities spanning computer vision, culinary intelligence, kitchen safety, and personalized nutrition.
 
 ---
 
-## 🌟 Platform Capabilities (All 10 Core Instructions Implemented)
+## 📊 Feature Status & Transparency Matrix
 
-### 1. Unified Multimodal Platform
-Integrates images, kitchen videos, speech/voice audio, and natural language into a single intuitive interface.
+The platform is designed with an honest separation between live external AI services, offline deterministic scientific algorithms, and simulated demonstrations:
 
-### 2. Computer Vision Food Recognition
-Automatically identifies dishes and food items from uploaded photos or camera captures using computer vision.
+| Capability / Module | Mode | Implementation Details | Live Key Required? |
+| :--- | :---: | :--- | :---: |
+| **1. Food Recognition & Nutrition** | **Mock / Demo** *(Live Optional)* | Computes calories, macronutrients, and a holistic Health Score (0–100). Default runs on curated nutritional presets (`samples/`). | **Yes** (Requires valid Gemini Vision key for custom photo identification) |
+| **2. Visual Freshness & Spoilage** | **Mock / Demo** *(Live Optional)* | Classifies food as Fresh, Moderately Fresh, or Spoiled with shelf-life estimations and storage guidance. | **Yes** (Requires valid Gemini Vision key for custom photo grading) |
+| **3. Restaurant Hygiene Monitor** | **Simulated Demo** | Evaluates kitchen frames against simulated HACCP criteria: glove compliance, hair-cap compliance, surface cleanliness, and cross-contamination alerts. | **No** (Deterministic demonstration audit) |
+| **4. Smart Cooking Assistant** | **Functional** | Voice input and text-to-speech synthesis via browser **Web Speech API**; interactive countdown timers per recipe step; curated chef database. | **No** (Browser Web Speech API + internal culinary database) |
+| **5. Personalized Meal Planner** | **Fully Functional** | Calculates Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE) using the scientifically validated **Mifflin-St Jeor Formula**. Generates 4-meal daily schedules and macro splits. | **No** (100% deterministic scientific calculation) |
+| **6. Intelligence Dashboard** | **Presentation Ready** | Live KPI summary, active sanitation alert logs, system status indicator, and one-click Executive Report printing via `window.print()`. | **No** (Client-side interactive dashboard) |
 
-### 3. Nutrition Analysis & Holistic Health Score
-Estimates Calories, Protein, Carbohydrates, Total Fat, Dietary Fiber, and computes a comprehensive **Health Score (0–100)** with nutritional grading (e.g., *Grade A+ Superfood* vs *Grade C High Saturated Fat*).
-
-### 4. Visual Freshness & Spoilage Classifier
-Evaluates surface patterns, moisture, texture, and oxidation to classify food into:
-- 🟢 **Fresh**
-- 🟡 **Moderately Fresh (Eat Soon)**
-- 🔴 **Spoiled (Unsafe / Discard)**  
-Includes estimated shelf life and specific storage recommendations.
-
-### 5. Restaurant Hygiene & Kitchen Safety Monitor
-Audits kitchen station frames and video feeds to evaluate:
-- **Glove Usage Compliance (%)**
-- **Hair-Cap & Beard-Net Adherence (%)**
-- **Food Contact Surface Cleanliness (%)**
-- **Cross-Contamination Hazard Risk** (Low, Moderate, High)
-- Generates immediate corrective safety alerts.
-
-### 6. Smart Cooking Assistant (Voice, Audio, Text, Vision)
-- **Voice Queries**: Click the microphone button 🎙️ and speak directly to Chef AI using Web Speech recognition.
-- **Vision Queries**: Upload a picture of your refrigerator or pantry to incorporate detected ingredients.
-- **Interactive Guidance**: Generates step-by-step recipes with **built-in cooking countdown timers** and chef secrets.
-
-### 7. Personalized Adaptive Meal Planning
-Calculates Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE) using the Mifflin-St Jeor formula:
-- Supports dietary goals: *Weight Loss*, *Muscle Gain*, *Keto*, *High Protein*, *Diabetic-Friendly (Low Glycemic)*, and *Balanced*.
-- Generates 4-meal daily schedules (Breakfast, Lunch, Dinner, Snack) with exact calorie targets and macro splits.
-- Recommends customized daily hydration targets.
-
-### 8. Multimodal AI Integration
-Combines computer vision, audio processing, and an LLM reasoning engine (Google Gemini 1.5 Flash Vision) with full offline mock fallback support.
-
-### 9. Scalable Full-Stack Architecture
-- **Backend**: Built with **FastAPI** and **Uvicorn**, structured with modular services in `backend/services/`.
-- **Frontend**: Component-driven **ReactJS** interface with smooth keyframe animations and `prefers-reduced-motion` accessibility.
-- **Interactive API Documentation**: Auto-generated Swagger UI available at `/docs`.
-
-### 10. Actionable AI Insights & Dashboards
-Consolidated Intelligence Dashboard featuring:
-- Key Performance Indicators (KPIs)
-- Live Food Safety & Sanitation Alerts feed
-- Multimodal AI pipeline flow diagram
-- **One-click "Export / Print Executive Report"** feature (`window.print()`).
+> [!IMPORTANT]
+> **AI Status Notice**: Food recognition and freshness detection run in **Mock Demo Mode** out-of-the-box. The application does not claim live computer vision or freshness analysis until configured with a valid Google Gemini API key.
 
 ---
 
 ## 📁 Project Architecture
 
 ```text
-Project/
+Food-Verse-AI/
 ├── backend/                        # Modular FastAPI Backend
 │   ├── __init__.py
-│   ├── config.py                   # Environment loader & API settings
+│   ├── config.py                   # Environment loader, key validator & AI mode check
 │   ├── models.py                   # Pydantic schemas across all 6 modules
 │   ├── services/                   # Modular capability services
 │   │   ├── __init__.py
@@ -76,67 +40,129 @@ Project/
 │   │   ├── cooking_service.py      # Voice/text/vision cooking assistant
 │   │   └── meal_plan_service.py    # TDEE calculator & adaptive meal planner
 │   └── main.py                     # FastAPI REST app & static file mounting
-├── app.py                          # Unified launcher (Uvicorn + FastAPI)
+├── samples/                        # Sample dish assets (Pizza, Burger, Sushi, Salad, Laddu)
+│   ├── burger.png
+│   ├── laddu.png
+│   ├── pizza.png
+│   ├── salad.png
+│   └── sushi.png
+├── app.py                          # Unified launcher (Uvicorn + FastAPI with port auto-select)
 ├── app.js                          # React 18 component application
 ├── index.html                      # HTML5 container & React mounting point
 ├── style.css                       # Responsive theme, keyframe animations & print CSS
-├── .env.example                    # Environment configuration template
-├── samples/                        # Quick-test dish images
-│   ├── pizza.png
-│   ├── burger.png
-│   ├── sushi.png
-│   └── salad.png
+├── requirements.txt                # Production Python dependencies
+├── Procfile                        # Cloud process file (web worker)
+├── render.yaml                     # Render Cloud deployment blueprint
+├── .env.example                    # Environment configuration template (safe placeholders)
+├── .gitignore                      # Git exclusion rules (protects .env and secrets)
 └── README.md                       # Complete platform documentation
 ```
 
 ---
 
-## 🚀 How to Run the Platform
+## 🚀 Running Locally
 
-### Step 1: Open Your Terminal
-```powershell
-cd c:\Users\Lenovo\Downloads\Project
+### Prerequisites
+- Python 3.10+ (tested with Python 3.11, 3.12, 3.14)
+- Web browser (Chrome, Edge, Firefox, or Safari)
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/akritisoni2006-beep/Food-Verse-AI.git
+cd Food-Verse-AI
 ```
 
-### Step 2: Start the FastAPI Server
-```powershell
+### Step 2: (Optional) Create a Virtual Environment
+```bash
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# macOS / Linux
+source venv/bin/activate
+```
+
+### Step 3: Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### Step 4: Start the Application
+```bash
 python app.py
 ```
-
-You will see:
-```text
-====================================================================
-  🍲 Food Verse AI – Multimodal Food Intelligence Platform
-====================================================================
-  👉 Web Dashboard:    http://localhost:8000
-  📖 API Documentation: http://localhost:8000/docs
-  ⚡ Backend Engine:    FastAPI + Uvicorn
-  💡 AI Engine Status: MOCK DEMO MODE (Default, no key required)
-====================================================================
+*Alternatively, you can run directly with Uvicorn:*
+```bash
+uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-### Step 3: Open in Your Browser
-- **Web Dashboard**: 👉 **[http://localhost:8000](http://localhost:8000)**
-- **Interactive API Swagger Docs**: 👉 **[http://localhost:8000/docs](http://localhost:8000/docs)**
+### Step 5: Open in Your Browser
+- **Web Platform**: 👉 **[http://localhost:8000](http://localhost:8000)**
+- **Interactive Swagger API Docs**: 👉 **[http://localhost:8000/docs](http://localhost:8000/docs)**
 
 ---
 
 ## 🔑 Activating Live Multimodal AI (Optional)
 
-The platform works out of the box in **Mock Demo Mode**.
+By default, the platform runs in **Mock Demo Mode** without requiring any API keys.
 
-To enable live multimodal vision:
-1. Copy `.env.example` to `.env`:
-   ```powershell
-   copy .env.example .env
+To connect live Google Gemini Vision:
+1. Obtain a free Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. Create a `.env` file in the project root:
+   ```bash
+   cp .env.example .env
    ```
-2. Paste your free Google AI Studio key:
+3. Set your API key in `.env`:
    ```env
-   GEMINI_API_KEY=AIzaSy...
+   GEMINI_API_KEY=AIzaSyYourActualKeyHere
    ```
-3. Restart `python app.py`. The backend will automatically switch to **Live Multimodal AI**.
+4. Restart the server (`python app.py`). The header badge will update from **`💡 Mock Demo Mode`** to **`✨ Live Gemini Vision`**.
+
+> [!CAUTION]
+> Never commit your `.env` file to GitHub or share your private API keys. The repository `.gitignore` is pre-configured to ignore `.env` files.
 
 ---
 
-## 🛑 How to Stop the Server
-Press `Ctrl + C` in the terminal where `python app.py` is running.
+## ☁️ Cloud Deployment Guide
+
+Food Verse AI is fully packaged for one-click cloud deployment on platforms like **Render**, **Railway**, or **Heroku**.
+
+### Deploying to Render
+1. Push your code to your GitHub repository.
+2. Sign in to [Render](https://render.com) and click **New > Web Service**.
+3. Connect your `Food-Verse-AI` repository.
+4. Render will auto-detect [`render.yaml`](render.yaml) or you can configure manually:
+   - **Environment**: `Python`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+5. *(Optional)* In the **Environment Variables** tab, add `GEMINI_API_KEY` with your Google AI Studio key.
+6. Click **Deploy Web Service**. Render will build the container and provide your live public URL (`https://food-verse-ai.onrender.com`).
+
+### Deploying to Railway / Heroku
+- The included [`Procfile`](Procfile) specifies the web worker command:
+  ```text
+  web: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+  ```
+- Simply connect the repository to Railway or Heroku; it will automatically install packages from `requirements.txt` and launch the web server.
+
+---
+
+## 🧪 Testing & Verification
+
+Verify backend health and services via the command line:
+
+```bash
+# Verify system status endpoint
+curl http://localhost:8000/api/status
+
+# Test food analysis endpoint (Mock Mode)
+curl -X POST http://localhost:8000/api/food/recognize \
+  -H "Content-Type: application/json" \
+  -d '{"image": "data:image/png;base64,placeholder", "sample_tag": "pizza"}'
+```
+
+---
+
+## 🛑 Stopping the Server
+Press `Ctrl + C` in the terminal where the server is running.
